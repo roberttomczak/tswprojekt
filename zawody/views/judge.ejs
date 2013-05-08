@@ -35,7 +35,7 @@
   <p>Welcome to <%= title %></p>
   <input type="text" name="Username" id="username"><br>
   <div class="btn">Go</div>
-<script src="/socket.io/socket.io.js"></script>
+
 <script>
   var socket = io.connect();
    socket.on('od_serwera', function (data) {
@@ -43,4 +43,5 @@
     socket.emit('od_klienta', { sie: 'ma!' });
   });
 </script>
+<script src="/javascripts/script2.js"></script>
 <% include footer.html %>
