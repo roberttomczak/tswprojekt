@@ -50,4 +50,9 @@ io.sockets.on('connection', function (socket) {
       console.log(data);
       io.sockets.emit('do_glownego', data);
     });
+
+    socket.on('newplayer',function(data){
+      console.log(data);
+      io.sockets.emit('nowenoty', data);
+    });
 });
