@@ -55,4 +55,9 @@ io.sockets.on('connection', function (socket) {
       console.log(data);
       io.sockets.emit('nowenoty', data);
     });
+
+    socket.on('sendocen',function(data){
+      console.log(data);
+      io.sockets.emit('ocenjudges', data);
+    });
 });

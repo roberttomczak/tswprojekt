@@ -21,4 +21,9 @@ $(function(){
 		socket.emit('newplayer',player);
 	});
 
+	socket.on('ocenjudges',function(data){
+		console.log(data);
+		$("#wyniki").append('<p>' + data.imie + '</p> <p> t: ' + data.t + ' g: ' + data.g +' k: ' + data.k + ' n: ' + data.n + ' r: ' + data.r + '</p>');
+	});
+
 });
