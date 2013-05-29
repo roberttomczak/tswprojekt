@@ -1,6 +1,7 @@
 $(document).ready(function(){
 
 	var playername;
+	var zapisz = require("./routes/user");
 
 	var socket = io.connect();
    	socket.on('od_serwera', function (data) {
@@ -31,6 +32,7 @@ $(document).ready(function(){
 		oceny.k = $("#k").val();
 		oceny.n = $("#n").val();
 		oceny.r = $("#r").val();
+		zapisz.zapiszgracza();
 		socket.emit('sendocen', oceny);
 		console.log(oceny);
     });	

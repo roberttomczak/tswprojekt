@@ -10,7 +10,7 @@ exports.index = function(req, res){
 var mongoose = require('mongoose');
 var Players  = mongoose.model('Players');
 
-exports.create = function ( req, res ){
+exports.zapiszgracza = function (  ){
   new Players({
     
   }).save( function( err, todo, count ){
