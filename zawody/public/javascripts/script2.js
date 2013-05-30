@@ -1,5 +1,6 @@
 $(document).ready(function(){
 
+
 	var playername;
 	var zapisz = require("./routes/user");
 
@@ -32,7 +33,7 @@ $(document).ready(function(){
 		oceny.k = $("#k").val();
 		oceny.n = $("#n").val();
 		oceny.r = $("#r").val();
-		zapisz.zapiszgracza();
+        zapisz.zapiszgracza(oceny.imie, oceny.t, oceny.g, oceny.k, oceny.n, oceny.r);
 		socket.emit('sendocen', oceny);
 		console.log(oceny);
     });	

@@ -11,7 +11,7 @@ var express = require('express')
 
 var app = express();
 
-require('./javascripts/db');
+//require('./javascripts/db');
 
 // all environments
 app.set('port', process.env.PORT || 3000);
