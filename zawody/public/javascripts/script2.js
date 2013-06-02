@@ -1,14 +1,9 @@
 $(document).ready(function(){
 
-
-	var playername;
-	var zapisz = require("./routes/user");
+	//var playername;
+	//var zapisz = require("./routes/user");
 
 	var socket = io.connect();
-   	socket.on('od_serwera', function (data) {
-    	console.log(data);
-    	socket.emit('od_klienta', { sie: 'ma!' });
-  	});
 
 	$(".btn").on('click', function(){
 		var username = $("#username").val();
@@ -16,6 +11,11 @@ $(document).ready(function(){
 		socket.emit('nazwa', username);
 		$("#username").val("");
 	});
+
+    socket.on('clientid',function(data){
+        console.log(data);
+        socket.emit('klientid', data);
+    });
 
 	socket.on('nowenoty',function(data){
 		console.log(data);
@@ -33,7 +33,7 @@ $(document).ready(function(){
 		oceny.k = $("#k").val();
 		oceny.n = $("#n").val();
 		oceny.r = $("#r").val();
-        zapisz.zapiszgracza(oceny.imie, oceny.t, oceny.g, oceny.k, oceny.n, oceny.r);
+        //zapisz.zapiszgracza(oceny.imie, oceny.t, oceny.g, oceny.k, oceny.n, oceny.r);
 		socket.emit('sendocen', oceny);
 		console.log(oceny);
     });	

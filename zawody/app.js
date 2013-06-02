@@ -4,7 +4,7 @@
  */
 
 var express = require('express')
-  , routes = require('./routes')
+  , routes = require('./routes/judge')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path');
@@ -24,7 +24,7 @@ app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
 app.use(express.session());
 app.use(app.router);
-  app.use(require('less-middleware')({ src: __dirname + '/public' }));
+app.use(require('less-middleware')({ src: __dirname + '/public' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
@@ -32,7 +32,7 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
+app.get('/judge', routes.index);
 app.get('/users', user.index);
 
 var server = http.createServer(app).listen(app.get('port'), function(){
@@ -40,17 +40,23 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 });
 
 var io = require('socket.io').listen(server);
+io.set('log level', 3);
+var ls = 0;
 io.sockets.on('connection', function (socket) {
-    socket.emit('od_serwera', {
-        ahoj: 'przygodo!'
-    });
-    socket.on('od_klienta', function (data) {
-        console.log(data);
-    });
+    ls++;
 
-    socket.on('nazwa',function(data){
+    console.log("LS'ow jest " + ls);
+
+    console.log(socket.id);
+    socket.emit('socketid', socket.id);
+    socket.emit('clientid', socket.id);
+    console.log("Client");
+//    io.sockets.socket(socket.id).emit('clientid', socket.id);
+
+
+    socket.on('klientid',function(data){
       console.log(data);
-      io.sockets.emit('do_glownego', data);
+      io.sockets.emit('socketid', data);
     });
 
     socket.on('newplayer',function(data){
@@ -61,5 +67,10 @@ io.sockets.on('connection', function (socket) {
     socket.on('sendocen',function(data){
       console.log(data);
       io.sockets.emit('ocenjudges', data);
+    });
+
+    socket.on('disconnect', function(){
+       ls--;
+       console.log("LS'ow jest " + ls);
     });
 });
