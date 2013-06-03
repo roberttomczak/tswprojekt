@@ -69,6 +69,10 @@ io.sockets.on('connection', function (socket) {
       io.sockets.emit('ocenjudges', data);
     });
 
+    socket.on('danee',function(data){
+        io.sockets.emit('dane', data);
+    });
+
     socket.on('disconnect', function(){
        ls--;
        console.log("LS'ow jest " + ls);
