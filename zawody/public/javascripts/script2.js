@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-	//var playername;
+	var playername;
 	//var zapisz = require("./routes/user");
     var id;
 
@@ -32,7 +32,7 @@ $(document).ready(function () {
 
 	socket.on('nowenoty', function (data) {
 		console.log(data);
-		//playername = data;
+		playername = data;
 		var imie = data.name, nazwisko = data.surname;
 		$('.noty').append('<div class="zawodnik"><div id="name">' + imie + ' ' + nazwisko + '</div> <p>T: <input type="number" id="t" min="0" max="10" step="0.5"></p> <p>G: <input type="number" id="g" min="0" max="10" step="0.5"></p> <p>K: <input type="number" id="k" min="0" max="10" step="0.5"></p> <p>N: <input type="number" id="n" min="0" max="10" step="0.5"></p> <p>R: <input type="number" id="r" min="0" max="10" step="0.5"></p><button class="btn btn-primary send" >Send</button></div>');
 	});
@@ -47,7 +47,8 @@ $(document).ready(function () {
 		oceny.n = $("#n").val();
 		oceny.r = $("#r").val();
         //zapisz.zapiszgracza(oceny.imie, oceny.t, oceny.g, oceny.k, oceny.n, oceny.r);
-		socket.emit('sendocen', oceny);
+		//socket.emit('sendocen', oceny);
+        socket.emit('zapisz', oceny);
 		console.log(oceny);
     });
 });

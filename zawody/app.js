@@ -11,7 +11,7 @@ var express = require('express')
 
 var app = express();
 
-//require('./javascripts/db');
+
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -40,8 +40,8 @@ var server = http.createServer(app).listen(app.get('port'), function () {
 });
 
 var io =  require('socket.io').listen(server);
-io.set('log level', 3);
-var ls = 0;
+io.set('log level', 1);
+var ls = -1;
 io.sockets.on('connection', function (socket) {
     ls++;
 
@@ -70,11 +70,42 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('danee', function (data) {
-        io.sockets.emit('dane', data);
+      io.sockets.emit('dane', data);
     });
 
     socket.on('disconnect', function () {
        ls--;
        console.log("LS'ow jest " + ls);
     });
+
+    var Players = require('./public/javascripts/db');
+    var ilosc = 0;
+    io.sockets.on('zapisz', function (dane) {
+
+        ilosc++;
+        console.log(ilosc);
+        var players = new Players();
+        players.name = dane.imie;
+        players.t += dane.t;
+        players.g += dane.g;
+        players.k += dane.k;
+        players.n += dane.n;
+        players.r += dane.r;
+        if (ilosc === ls) {
+            players.srednia =  (players.t + players.g + players.k + players.n + players.r) / ls;
+            players.save(function(err, player_saved){
+                if(err){
+                    throw err;
+                    console.log(err);
+                    db.close();
+                }else{
+                    console.log('saved!');
+                    db.close();
+                }
+            });
+        }
+
+    });
+
+
 });

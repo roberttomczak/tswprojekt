@@ -12,6 +12,6 @@ var Players = new Schema({
 
 });
  
-mongoose.model('Players', Players);
- 
 mongoose.connect('mongodb://localhost/players');
+
+module.exports = mongoose.model('Players', Players);

@@ -23,7 +23,7 @@
       <file leaf-file-name="script2.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/script2.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="31" selection-start="292" selection-end="292" vertical-scroll-proportion="0.0">
+            <state line="42" column="33" selection-start="1633" selection-end="1633" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -32,7 +32,7 @@
       <file leaf-file-name="script.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/script.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="21" selection-start="1009" selection-end="1009" vertical-scroll-proportion="0.0">
+            <state line="26" column="65" selection-start="830" selection-end="830" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -41,7 +41,25 @@
       <file leaf-file-name="app.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="74" column="0" selection-start="1879" selection-end="1879" vertical-scroll-proportion="0.63506263">
+            <state line="86" column="36" selection-start="2154" selection-end="2154" vertical-scroll-proportion="0.30053666">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="db.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/javascripts/db.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="0" selection-start="228" selection-end="228" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/routes/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="5" column="0" selection-start="27" selection-end="27" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -51,6 +69,15 @@
         <entry file="file://$PROJECT_DIR$/routes/judge.js">
           <provider selected="true" editor-type-id="text-editor">
             <state line="2" column="2" selection-start="87" selection-end="87" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="user.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/routes/user.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="26" column="13" selection-start="400" selection-end="400" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -81,10 +108,11 @@
         <option value="$PROJECT_DIR$/routes/index.js" />
         <option value="$PROJECT_DIR$/views/index.ejs" />
         <option value="$PROJECT_DIR$/views/judge.ejs" />
-        <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/routes/judge.js" />
-        <option value="$PROJECT_DIR$/public/javascripts/script2.js" />
         <option value="$PROJECT_DIR$/public/javascripts/script.js" />
+        <option value="$PROJECT_DIR$/public/javascripts/script2.js" />
+        <option value="$PROJECT_DIR$/public/javascripts/db.js" />
+        <option value="$PROJECT_DIR$/app.js" />
       </list>
     </option>
   </component>
@@ -229,8 +257,8 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="options.lastSelected" value="preferences.sourceCode" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager">
     <list size="0" />
@@ -338,11 +366,6 @@
         <state line="5" column="0" selection-start="27" selection-end="110" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/db.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/bootstrap.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="110" column="11" selection-start="3325" selection-end="3327" vertical-scroll-proportion="0.33205375" />
@@ -356,16 +379,6 @@
     <entry file="file://$PROJECT_DIR$/node_modules/ejs/ejs.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="22" column="38" selection-start="562" selection-end="562" vertical-scroll-proportion="0.3787466" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="0" selection-start="27" selection-end="27" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/user.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="127" selection-end="127" vertical-scroll-proportion="-0.57493186" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/judge.ejs">
@@ -385,6 +398,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/routes/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="0" selection-start="27" selection-end="27" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/user.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="13" selection-start="400" selection-end="400" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/routes/judge.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="2" column="2" selection-start="87" selection-end="87" vertical-scroll-proportion="0.0">
@@ -392,23 +419,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/public/javascripts/db.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="0" selection-start="228" selection-end="228" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/script.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="21" selection-start="1009" selection-end="1009" vertical-scroll-proportion="0.0">
+        <state line="26" column="65" selection-start="830" selection-end="830" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/script2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="31" selection-start="292" selection-end="292" vertical-scroll-proportion="0.0">
+        <state line="42" column="33" selection-start="1633" selection-end="1633" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="74" column="0" selection-start="1879" selection-end="1879" vertical-scroll-proportion="0.63506263">
+        <state line="86" column="36" selection-start="2154" selection-end="2154" vertical-scroll-proportion="0.30053666">
           <folding />
         </state>
       </provider>
