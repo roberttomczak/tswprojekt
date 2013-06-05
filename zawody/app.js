@@ -42,6 +42,9 @@ var server = http.createServer(app).listen(app.get('port'), function () {
 var io =  require('socket.io').listen(server);
 io.set('log level', 1);
 var ls = -1;
+var ilosc = 0, t = 0, g = 0, k = 0, n= 0, r = 0;
+var db = require('./public/javascripts/db');
+var mongoose = require('mongoose');
 io.sockets.on('connection', function (socket) {
     ls++;
 
@@ -78,31 +81,44 @@ io.sockets.on('connection', function (socket) {
        console.log("LS'ow jest " + ls);
     });
 
-    var Players = require('./public/javascripts/db');
-    var ilosc = 0;
-    io.sockets.on('zapisz', function (dane) {
-
+    
+    
+    socket.on('zapisz', function (dane) {
         ilosc++;
         console.log(ilosc);
-        var players = new Players();
+        var players = new db.model();
         players.name = dane.imie;
-        players.t += dane.t;
-        players.g += dane.g;
-        players.k += dane.k;
-        players.n += dane.n;
-        players.r += dane.r;
+        t += dane.t;
+        g += dane.g;
+        k += dane.k;
+        n += dane.n;
+        r += dane.r;
+	console.log(t);
+	console.log(g);
+	console.log(k);
+	console.log(n);
+	console.log(r);
         if (ilosc === ls) {
-            players.srednia =  (players.t + players.g + players.k + players.n + players.r) / ls;
-            players.save(function(err, player_saved){
-                if(err){
-                    throw err;
-                    console.log(err);
-                    db.close();
-                }else{
-                    console.log('saved!');
-                    db.close();
-                }
-            });
+		mongoose.connect('mongodb://localhost/players');
+		mongoose.connection.on('open', function (){			 
+			players.t = t;
+			players.g = g;
+			players.k = k;
+			players.n = n;
+			players.r = r;
+			players.srednia =  (players.t + players.g + players.k + players.n + players.r) / ls;
+			players.save(function(err, player_saved){
+				if(err){
+					throw err;
+					console.log(err);
+					mongoose.connection.close();
+				}else{
+					console.log('saved!');
+					mongoose.connection.close();
+				}
+			});
+			
+		});
         }
 
     });

@@ -1,9 +1,8 @@
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
- 
+exports.conn = mongoose.connection; 
 var Players = new Schema({
     name    : String,
-    surname    : String,
     t : Number,
     g : Number,
     k : Number,
@@ -11,7 +10,8 @@ var Players = new Schema({
     r : Number
 
 });
- 
+
+
 mongoose.connect('mongodb://localhost/players');
 
-module.exports = mongoose.model('Players', Players);
+exports.model= mongoose.model('Players', Players);

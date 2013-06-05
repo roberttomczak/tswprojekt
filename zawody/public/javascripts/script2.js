@@ -38,7 +38,6 @@ $(document).ready(function () {
 	});
 
 	$('body').on('click', '.send', function () {
-		console.log("Dziala Kurwa!!");
 		var oceny = {};
 		oceny.imie = playername.name;
 		oceny.t = $("#t").val();
@@ -46,9 +45,7 @@ $(document).ready(function () {
 		oceny.k = $("#k").val();
 		oceny.n = $("#n").val();
 		oceny.r = $("#r").val();
-        //zapisz.zapiszgracza(oceny.imie, oceny.t, oceny.g, oceny.k, oceny.n, oceny.r);
-		//socket.emit('sendocen', oceny);
-        socket.emit('zapisz', oceny);
+        	socket.emit('zapisz', oceny);
 		console.log(oceny);
     });
 });
