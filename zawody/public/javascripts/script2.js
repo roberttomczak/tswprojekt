@@ -1,8 +1,7 @@
 $(document).ready(function () {
 
 	var playername;
-	//var zapisz = require("./routes/user");
-    var id;
+    var clid;
 
 	var socket = io.connect();
     $(".noty").on('focusout', 'input', function () {
@@ -10,10 +9,10 @@ $(document).ready(function () {
         var iden = $(this).attr('id');
         if (info.length != 0) {
             console.log("ID to " + iden + " a wartosc to " + info);
-            socket.emit('danee', {ide: iden, clientid: id, mood: "ok"});
+            socket.emit('danee', {ide: iden, clientid: clid, mood: "ok"});
         } else {
             console.log("Remove");
-            socket.emit('danee', {ide: iden, clientid: id, mood: "bad"});
+            socket.emit('danee', {ide: iden, clientid: clid, mood: "bad"});
         }
 
     });
@@ -26,7 +25,7 @@ $(document).ready(function () {
 
     socket.on('clientid', function (data) {
         console.log(data);
-        id = data;
+        clid = data;
         socket.emit('klientid', data);
     });
 
@@ -34,7 +33,7 @@ $(document).ready(function () {
 		console.log(data);
 		playername = data;
 		var imie = data.name, nazwisko = data.surname;
-		$('.noty').append('<div class="zawodnik"><div id="name">' + imie + ' ' + nazwisko + '</div> <p>T: <input type="number" id="t" min="0" max="10" step="0.5"></p> <p>G: <input type="number" id="g" min="0" max="10" step="0.5"></p> <p>K: <input type="number" id="k" min="0" max="10" step="0.5"></p> <p>N: <input type="number" id="n" min="0" max="10" step="0.5"></p> <p>R: <input type="number" id="r" min="0" max="10" step="0.5"></p><button class="btn btn-primary send" >Send</button></div>');
+		$('.noty').append('<div class="zawodnik"><div id="name">' + imie + ' ' + nazwisko + '</div> <p>T: <input type="number" id="t" min="0" max="10" step="0.5"></p> <p>G: <input type="number" id="g" min="0" max="10" step="0.5"></p> <p>K: <input type="number" id="k" min="0" max="10" step="0.5"></p> <p>N: <input type="number" id="n" min="0" max="10" step="0.5"></p> <p>R: <input type="number" id="r" min="0" max="10" step="0.5"></p><button class="btn btn-primary send" disabled >Send</button></div>');
 	});
 
 	$('body').on('click', '.send', function () {
@@ -45,7 +44,17 @@ $(document).ready(function () {
 		oceny.k = $("#k").val();
 		oceny.n = $("#n").val();
 		oceny.r = $("#r").val();
-        	socket.emit('zapisz', oceny);
+        socket.emit('zapisz', oceny);
 		console.log(oceny);
+        $(this).parent().remove();
+        console.log(clid);
+        socket.emit('flusk', {clientid : clid});
+    });
+
+    socket.on('accept', function (data) {
+        if(data.stan === "aktywny"){
+            console.log("OK button enabled");
+            $("div.zawodnik .send").removeAttr("disabled");
+        }
     });
 });

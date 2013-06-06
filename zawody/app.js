@@ -42,9 +42,58 @@ var server = http.createServer(app).listen(app.get('port'), function () {
 var io =  require('socket.io').listen(server);
 io.set('log level', 1);
 var ls = -1;
-var ilosc = 0, t = 0, g = 0, k = 0, n= 0, r = 0;
-var db = require('./public/javascripts/db');
-var mongoose = require('mongoose');
+var ilosc = 0, t = 0, g = 0, k = 0, n = 0, r = 0, srednianot = 0;
+//var db = require('./public/javascripts/db');
+
+//MongoDB
+var zapisz = function (t1, g1, k1, n1, r1, sredniafun){
+    var mongoose = require('mongoose');
+
+    var db = mongoose.connection;
+
+    var Players = mongoose.Schema({
+        name    : String,
+        t : Number,
+        g : Number,
+        k : Number,
+        n : Number,
+        r : Number,
+        srednia : Number
+
+    });
+    var playersmodel = db.model('Players', Players);
+
+    mongoose.connect('mongodb://localhost/test', function(err){
+        if (err) throw err;
+        else console.log("Connected to database");
+    });
+
+    db.on('open', function () {
+        console.log("Add to database");
+        var player = new playersmodel({
+            name : "Robert",
+            t : t1,
+            g : g1,
+            k : k1,
+            n : n1,
+            r : r1,
+            srednia : sredniafun
+        });
+
+        player.save(function(err, player_saved){
+            if(err){
+                throw err;
+                console.log(err);
+                db.close();
+            }else{
+                console.log('saved!');
+                console.log(player_saved);
+                db.close();
+            }
+        });
+    });
+};
+
 io.sockets.on('connection', function (socket) {
     ls++;
 
@@ -76,6 +125,15 @@ io.sockets.on('connection', function (socket) {
       io.sockets.emit('dane', data);
     });
 
+    socket.on('flusk', function (data){
+        console.log(data.clientid)
+        io.sockets.socket(data.clientid).emit('wyczysc', data);
+    });
+
+    socket.on('aktywuj', function (data){
+        io.sockets.socket(data.clientid).emit('accept', data);
+    });
+
     socket.on('disconnect', function () {
        ls--;
        console.log("LS'ow jest " + ls);
@@ -86,42 +144,24 @@ io.sockets.on('connection', function (socket) {
     socket.on('zapisz', function (dane) {
         ilosc++;
         console.log(ilosc);
-        var players = new db.model();
-        players.name = dane.imie;
-        t += dane.t;
-        g += dane.g;
-        k += dane.k;
-        n += dane.n;
-        r += dane.r;
-	console.log(t);
-	console.log(g);
-	console.log(k);
-	console.log(n);
-	console.log(r);
+        t += parseFloat(dane.t);
+        g += parseFloat(dane.g);
+        k += parseFloat(dane.k);
+        n += parseFloat(dane.n);
+        r += parseFloat(dane.r);
+        console.log(t);
+        console.log(g);
+        console.log(k);
+        console.log(n);
+        console.log(r);
         if (ilosc === ls) {
-		mongoose.connect('mongodb://localhost/players');
-		mongoose.connection.on('open', function (){			 
-			players.t = t;
-			players.g = g;
-			players.k = k;
-			players.n = n;
-			players.r = r;
-			players.srednia =  (players.t + players.g + players.k + players.n + players.r) / ls;
-			players.save(function(err, player_saved){
-				if(err){
-					throw err;
-					console.log(err);
-					mongoose.connection.close();
-				}else{
-					console.log('saved!');
-					mongoose.connection.close();
-				}
-			});
-			
-		});
+            console.log("Before");
+            srednianot = (t + g + k + n + r) / ls;
+            zapisz(t,g,k,n,r,srednianot);
+            console.log(srednianot);
+            ilosc = 0, t = 0, g = 0, k = 0, n = 0, r = 0, srednianot = 0;
+
+
         }
-
     });
-
-
 });

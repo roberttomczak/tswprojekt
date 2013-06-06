@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
-exports.conn = mongoose.connection; 
+db = mongoose.connection;
 var Players = new Schema({
     name    : String,
     t : Number,

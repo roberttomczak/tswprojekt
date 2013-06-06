@@ -30,12 +30,19 @@ $(function () {
 //        var ok = $("i.icon-ok").length;
 //        console.log(ok);
 
-        if ($("i.icon-ok").length == 5) {
-            console.log("IN IF");
-            $("#eviar").html("OK");
+        if ($("div." + dane.clientid + " i.icon-ok").length == 5) {
+            console.log("IN IF " + dane.clientid);
+
+            $("div." + dane.clientid + " #eviar").html("Kliknij by akceptowac noty <p><button class='btn' id='accept'>Akceptuj</button></p> ");
         } else {
-            $("#eviar").html("");
+            $("div." + dane.clientid + " #eviar").html("");
         }
+    });
+
+    $('.well').on('click', '#accept', function () {
+        var iden = $(this).parent().parent().parent().parent().attr("class");
+        console.log(iden);
+        socket.emit('aktywuj', {stan : "aktywny", clientid : iden});
     });
 
 	socket.on('ocenjudges', function (data) {
@@ -43,10 +50,19 @@ $(function () {
 		$("#wyniki").append('<p>' + data.imie + '</p> <p> t: ' + data.t + ' g: ' + data.g + ' k: ' + data.k + ' n: ' + data.n + ' r: ' + data.r + '</p>');
 	});
 
+
     socket.on('socketid', function (data) {
         console.log(data);
-        $(".well").append("<div class='" + data + "'><p>" + data + "</p><div class='zaakceptowane'><span id='t'>T:<i class='icon-remove'></i></span><span id='g'>G:<i class='icon-remove'></i></span><span id='k'>K:<i class='icon-remove'></i></span><span id='n'>N:<i class='icon-remove'></i></span><span id='r'>R:<i class='icon-remove'></i></span></div><br><span id='eviar'></span></div>");
+        $(".well").append("<div class='" + data + "'><p>" + data + "</p><div class='zaakceptowane'><span id='t'>T:<i class='icon-remove'></i></span><span id='g'>G:<i class='icon-remove'></i></span><span id='k'>K:<i class='icon-remove'></i></span><span id='n'>N:<i class='icon-remove'></i></span><span id='r'>R:<i class='icon-remove'></i></span><br><span id='eviar'></span></div>");
 
+    });
+
+
+
+    socket.on('wyczysc', function (data) {
+        //console.log("Czyszczenie");
+        $(".well div." + data.clientid + " span i").removeClass("icon-ok").addClass("icon-remove");
+        $("div." + data.clientid + " #eviar").html("");
     });
 
 });
