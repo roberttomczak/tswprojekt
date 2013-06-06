@@ -60,7 +60,7 @@ $(function () {
 
 
     socket.on('wyczysc', function (data) {
-        //console.log("Czyszczenie");
+        console.log("Czyszczenie");
         $(".well div." + data.clientid + " span i").removeClass("icon-ok").addClass("icon-remove");
         $("div." + data.clientid + " #eviar").html("");
     });

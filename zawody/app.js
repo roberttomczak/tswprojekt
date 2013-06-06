@@ -32,7 +32,15 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/judge', routes.index);
+app.get('/judge',/* routes.index*/ function(){
+    var Player = db.model( 'Players' );
+    Player.find( function ( err, players , count){
+        res.render('index', {
+            title : 'Express Judge Notes',
+            players : players
+        });
+    });
+});
 app.get('/users', user.index);
 
 var server = http.createServer(app).listen(app.get('port'), function () {
@@ -42,26 +50,26 @@ var server = http.createServer(app).listen(app.get('port'), function () {
 var io =  require('socket.io').listen(server);
 io.set('log level', 1);
 var ls = -1;
-var ilosc = 0, t = 0, g = 0, k = 0, n = 0, r = 0, srednianot = 0;
+var ilosc = 0, t = 0, g = 0, k = 0, n = 0, r = 0, srednianot = 0, imie = "";
 //var db = require('./public/javascripts/db');
 
 //MongoDB
-var zapisz = function (t1, g1, k1, n1, r1, sredniafun){
-    var mongoose = require('mongoose');
+var mongoose = require('mongoose');
+var db = mongoose.connection;
 
-    var db = mongoose.connection;
+var Players = mongoose.Schema({
+    name    : String,
+    t : Number,
+    g : Number,
+    k : Number,
+    n : Number,
+    r : Number,
+    srednia : Number
 
-    var Players = mongoose.Schema({
-        name    : String,
-        t : Number,
-        g : Number,
-        k : Number,
-        n : Number,
-        r : Number,
-        srednia : Number
+});
 
-    });
-    var playersmodel = db.model('Players', Players);
+var playersmodel = db.model('Players', Players);
+var zapisz = function (name1, t1, g1, k1, n1, r1, sredniafun){
 
     mongoose.connect('mongodb://localhost/test', function(err){
         if (err) throw err;
@@ -71,7 +79,7 @@ var zapisz = function (t1, g1, k1, n1, r1, sredniafun){
     db.on('open', function () {
         console.log("Add to database");
         var player = new playersmodel({
-            name : "Robert",
+            name : name1,
             t : t1,
             g : g1,
             k : k1,
@@ -127,7 +135,7 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('flusk', function (data){
         console.log(data.clientid)
-        io.sockets.socket(data.clientid).emit('wyczysc', data);
+        io.sockets.emit('wyczysc', data);
     });
 
     socket.on('aktywuj', function (data){
@@ -144,6 +152,8 @@ io.sockets.on('connection', function (socket) {
     socket.on('zapisz', function (dane) {
         ilosc++;
         console.log(ilosc);
+        console.log(dane.imie);
+        imie = dane.imie;
         t += parseFloat(dane.t);
         g += parseFloat(dane.g);
         k += parseFloat(dane.k);
@@ -157,9 +167,9 @@ io.sockets.on('connection', function (socket) {
         if (ilosc === ls) {
             console.log("Before");
             srednianot = (t + g + k + n + r) / ls;
-            zapisz(t,g,k,n,r,srednianot);
+            zapisz(dane.imie,t,g,k,n,r,srednianot);
             console.log(srednianot);
-            ilosc = 0, t = 0, g = 0, k = 0, n = 0, r = 0, srednianot = 0;
+            ilosc = 0, t = 0, g = 0, k = 0, n = 0, r = 0, srednianot = 0 , imie = "";
 
 
         }

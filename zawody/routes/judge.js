@@ -1,11 +1,10 @@
-//var mongoose = require( 'mongoose' );
-//var Player     = mongoose.model('Players');
-
+var mongoose = require('mongoose');
 exports.index = function ( req, res ){
-//    Player.find( function ( err, players ){
-        res.render('index', {
-            title : 'Express Todo Example',
-//            players : players
+    var Player = mongoose.model( 'Players' );
+    Player.find( function ( err, players , count){
+      res.render('index', {
+        title : 'Express Judge Notes',
+        players : players
         });
-//    });
+    });
 };
