@@ -1,17 +1,21 @@
 var mongoose = require('mongoose');
-var Schema   = mongoose.Schema;
-db = mongoose.connection;
-var Players = new Schema({
+exports.db = mongoose.connection;
+dbs = mongoose.connection;
+
+mongoose.connect('mongodb://localhost/test', function(err){
+    if (err) throw err;
+    else console.log("Connected to database db.js");
+});
+
+var Players = mongoose.Schema({
     name    : String,
     t : Number,
     g : Number,
     k : Number,
     n : Number,
-    r : Number
+    r : Number,
+    srednia : Number
 
 });
 
-
-mongoose.connect('mongodb://localhost/players');
-
-exports.model= mongoose.model('Players', Players);
+exports.playersmodel = dbs.model('Players', Players)

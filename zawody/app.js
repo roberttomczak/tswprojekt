@@ -6,6 +6,7 @@
 var express = require('express')
   , routes = require('./routes/judge')
   , user = require('./routes/user')
+  , basic = require('./routes/basic')
   , http = require('http')
   , path = require('path');
 
@@ -32,15 +33,8 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/judge',/* routes.index*/ function(){
-    var Player = db.model( 'Players' );
-    Player.find( function ( err, players , count){
-        res.render('index', {
-            title : 'Express Judge Notes',
-            players : players
-        });
-    });
-});
+app.get('/', basic.index);
+app.get('/judge', routes.index);
 app.get('/users', user.index);
 
 var server = http.createServer(app).listen(app.get('port'), function () {
@@ -51,8 +45,8 @@ var io =  require('socket.io').listen(server);
 io.set('log level', 1);
 var ls = -1;
 var ilosc = 0, t = 0, g = 0, k = 0, n = 0, r = 0, srednianot = 0, imie = "";
-//var db = require('./public/javascripts/db');
 
+//dbs = require('./public/javascripts/db')
 //MongoDB
 var mongoose = require('mongoose');
 var db = mongoose.connection;
@@ -68,17 +62,18 @@ var Players = mongoose.Schema({
 
 });
 
-var playersmodel = db.model('Players', Players);
+var Playersmodel = db.model('Players', Players);
+//Funkcja zapisujaca do bazy danych
 var zapisz = function (name1, t1, g1, k1, n1, r1, sredniafun){
 
     mongoose.connect('mongodb://localhost/test', function(err){
         if (err) throw err;
-        else console.log("Connected to database");
+        else console.log("Connected to database app");
     });
 
     db.on('open', function () {
         console.log("Add to database");
-        var player = new playersmodel({
+        var player = new Playersmodel({
             name : name1,
             t : t1,
             g : g1,
@@ -98,8 +93,20 @@ var zapisz = function (name1, t1, g1, k1, n1, r1, sredniafun){
                 console.log(player_saved);
                 db.close();
             }
+
         });
+        player = {};
     });
+    //db.close();
+    console.log()
+};
+//Funkcja znajdujaca wszystkich uzytkowanikow
+var odczytaj = function () {
+    return Playersmodel.find({}, function ( err, players, count ){
+        console.log("Odczytaj" + players);
+    });
+
+
 };
 
 io.sockets.on('connection', function (socket) {
@@ -108,6 +115,7 @@ io.sockets.on('connection', function (socket) {
     console.log("LS'ow jest " + ls);
 
     console.log(socket.id);
+
     socket.emit('socketid', socket.id);
     socket.emit('clientid', socket.id);
     console.log("Client");
@@ -124,17 +132,13 @@ io.sockets.on('connection', function (socket) {
       io.sockets.emit('nowenoty', data);
     });
 
-    socket.on('sendocen', function (data) {
-      console.log(data);
-      io.sockets.emit('ocenjudges', data);
-    });
 
     socket.on('danee', function (data) {
       io.sockets.emit('dane', data);
     });
 
     socket.on('flusk', function (data){
-        console.log(data.clientid)
+
         io.sockets.emit('wyczysc', data);
     });
 
@@ -147,8 +151,6 @@ io.sockets.on('connection', function (socket) {
        console.log("LS'ow jest " + ls);
     });
 
-    
-    
     socket.on('zapisz', function (dane) {
         ilosc++;
         console.log(ilosc);
@@ -167,8 +169,11 @@ io.sockets.on('connection', function (socket) {
         if (ilosc === ls) {
             console.log("Before");
             srednianot = (t + g + k + n + r) / ls;
+            var spis = odczytaj();
+            socket.emit('spis', {playerlist : spis});
             zapisz(dane.imie,t,g,k,n,r,srednianot);
-            console.log(srednianot);
+            console.log("Spis " + spis);
+            console.log("Srednia " + srednianot);
             ilosc = 0, t = 0, g = 0, k = 0, n = 0, r = 0, srednianot = 0 , imie = "";
 
 
