@@ -44,7 +44,7 @@ var server = http.createServer(app).listen(app.get('port'), function () {
 var io =  require('socket.io').listen(server);
 io.set('log level', 1);
 var ls = -1;
-var ilosc = 0, t = 0, g = 0, k = 0, n = 0, r = 0, srednianot = 0, imie = "";
+var ilosc = 0, t = 0, g = 0, k = 0, n = 0, r = 0, srednianot = 0, imie = "", licznik = 0;
 
 //dbs = require('./public/javascripts/db')
 //MongoDB
@@ -64,6 +64,7 @@ var Players = mongoose.Schema({
 
 var Playersmodel = db.model('Players', Players);
 //Funkcja zapisujaca do bazy danych
+var player;
 var zapisz = function (name1, t1, g1, k1, n1, r1, sredniafun){
 
     mongoose.connect('mongodb://localhost/test', function(err){
@@ -71,34 +72,37 @@ var zapisz = function (name1, t1, g1, k1, n1, r1, sredniafun){
         else console.log("Connected to database app");
     });
 
+    player = new Playersmodel({
+        name : name1,
+        t : t1,
+        g : g1,
+        k : k1,
+        n : n1,
+        r : r1,
+        srednia : sredniafun
+    });
+
     db.on('open', function () {
         console.log("Add to database");
-        var player = new Playersmodel({
-            name : name1,
-            t : t1,
-            g : g1,
-            k : k1,
-            n : n1,
-            r : r1,
-            srednia : sredniafun
-        });
 
         player.save(function(err, player_saved){
             if(err){
                 throw err;
                 console.log(err);
+                player = null;
                 db.close();
             }else{
                 console.log('saved!');
                 console.log(player_saved);
+                player = null;
                 db.close();
             }
 
         });
-        player = {};
     });
+    //player = null;
     //db.close();
-    console.log()
+    //console.log()
 };
 //Funkcja znajdujaca wszystkich uzytkowanikow
 var odczytaj = function () {
@@ -166,11 +170,22 @@ io.sockets.on('connection', function (socket) {
         console.log(k);
         console.log(n);
         console.log(r);
+//        player = null;
         if (ilosc === ls) {
             console.log("Before");
             srednianot = (t + g + k + n + r) / ls;
             var spis = odczytaj();
             socket.emit('spis', {playerlist : spis});
+//            player = new Playersmodel({
+//                name : dane.imie,
+//                t : t,
+//                g : g,
+//                k : k,
+//                n : n,
+//                r : r,
+//                srednia : srednianot
+//            });
+//            zapisz(player);
             zapisz(dane.imie,t,g,k,n,r,srednianot);
             console.log("Spis " + spis);
             console.log("Srednia " + srednianot);
